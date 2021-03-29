@@ -1,16 +1,15 @@
 <template>
   <div class="container column">
-    <app-form></app-form>
-    <app-view></app-view>
+    <AppForm />
+    <AppView />
   </div>
   <div class="container">
-    <p>
-      <button
-          class="btn primary"
-      >Загрузить комментарии</button>
-    </p>
-    <app-comments></app-comments>
-    <app-loader></app-loader>
+    <AppLoader v-if="loading" />
+    <AppComments
+        :comments="comments"
+        @load-comments="handleSubmitForm"
+        v-else
+    />
   </div>
 </template>
 
@@ -21,6 +20,21 @@ import AppComments from './components/AppComments'
 import AppLoader from './components/AppLoader'
 
 export default {
+  data() {
+    return {
+      comments: [],
+      loading: false
+    }
+  },
+  methods: {
+    async handleSubmitForm() {
+      const url = `https://jsonplaceholder.typicode.com/comments?_limit=42`
+      this.loading = true
+      const response = await fetch(url)
+      this.comments = await response.json()
+      this.loading = false
+    }
+  },
   components: {AppForm, AppView, AppComments, AppLoader}
 }
 </script>
