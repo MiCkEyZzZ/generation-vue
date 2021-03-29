@@ -1,14 +1,14 @@
 <template>
   <div class="container column">
-    <AppForm />
-    <AppView />
+    <AppForm @item-added="handleCreateBlock" />
+    <AppView :blocks="blocks" />
   </div>
   <div class="container">
     <AppLoader v-if="loading" />
     <AppComments
+        v-else
         :comments="comments"
         @load-comments="handleSubmitForm"
-        v-else
     />
   </div>
 </template>
@@ -22,6 +22,7 @@ import AppLoader from './components/AppLoader'
 export default {
   data() {
     return {
+      blocks: [],
       comments: [],
       loading: false
     }
@@ -33,6 +34,9 @@ export default {
       const response = await fetch(url)
       this.comments = await response.json()
       this.loading = false
+    },
+    handleCreateBlock(block) {
+     this.blocks.push(block)
     }
   },
   components: {AppForm, AppView, AppComments, AppLoader}
@@ -40,14 +44,5 @@ export default {
 </script>
 
 <style>
-.avatar {
-  display: flex;
-  justify-content: center;
-}
 
-.avatar img {
-  width: 150px;
-  height: auto;
-  border-radius: 50%;
-}
 </style>
