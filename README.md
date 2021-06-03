@@ -1,4 +1,4 @@
-# vue-generation
+# A vue-form-generator field
 
 ## Project setup
 ```
